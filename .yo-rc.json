@@ -1,0 +1,19 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "useGulp": false,
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.22.3",
+    "sdksVersions": {},
+    "version": "1.23.0",
+    "libraryName": "dataviewer",
+    "libraryId": "d3e7adb4-6729-4fd1-8b7d-6bcc1bcc560e",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "dataviewer",
+    "solutionShortDescription": "dataviewer description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

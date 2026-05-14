@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "dataviewer-client-side-solution",
+    "id": "d3e7adb4-6729-4fd1-8b7d-6bcc1bcc560e",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.23.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "dataviewer description"
+      },
+      "longDescription": {
+        "default": "dataviewer description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "dataviewer Feature",
+        "description": "The feature that activates elements of the dataviewer solution.",
+        "id": "b2c653ac-107e-470b-bb13-2f4ed7633fd1",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/dataviewer.sppkg"
+  }
+}
