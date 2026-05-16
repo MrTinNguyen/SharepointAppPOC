@@ -49,9 +49,8 @@ async function createCompletion(systemPrompt, userContent, options = {}) {
 
 async function _gemini(systemPrompt, userContent, options = {}) {
   const { GoogleGenerativeAI } = require('@google/generative-ai');
-  // Always use a Gemini model — ignore any model name passed by agents
-  // (they may pass 'gpt-4o' which is an OpenAI name and invalid here).
-  const model = 'gemini-1.5-flash';
+  // gemini-2.0-flash: free tier, fast, available on stable v1 API
+  const model = 'gemini-2.0-flash';
   const { jsonMode = false } = options;
 
   const apiKey = process.env.AI_API_KEY || process.env.OPENAI_API_KEY;
