@@ -36,24 +36,15 @@ function findSppkg() {
 async function main() {
   console.log('\n🚀 DevOps Agent — SPFx Build & Deploy\n');
 
-  // 1. Install SPFx dependencies if node_modules is missing (e.g. cold runner, cache miss).
+  // 1. Install SPFx dependencies.
   console.log('── Installing SPFx dependencies ──');
   exec('npm ci');
 
-  // Verify gulp is present before trying to run it.
-  const gulpBin = path.join(process.cwd(), 'node_modules', '.bin', 'gulp');
-  if (!fs.existsSync(gulpBin)) {
-    throw new Error(
-      `gulp not found at ${gulpBin} after npm ci.\n` +
-      'Make sure gulp-cli is listed in the project devDependencies.'
-    );
-  }
-
   // 2. Build production bundle.
-  // Always use the local gulp installed by SPFx — never `npx gulp` (downloads incompatible gulp 5).
+  // This project uses Heft (SPFx 1.20+), NOT the legacy gulp toolchain.
+  // The build script in package.json runs: heft test --clean --production && heft package-solution --production
   console.log('\n── Building SPFx solution ──');
-  exec(`"${gulpBin}" bundle --ship`);
-  exec(`"${gulpBin}" package-solution --ship`);
+  exec('npm run build');
 
   const sppkgPath = findSppkg();
   if (!sppkgPath) {

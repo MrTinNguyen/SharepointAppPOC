@@ -94,11 +94,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # SPFx requires Node 18. Node 20+ breaks the gulp toolchain.
-      - name: Setup Node 18 (SPFx)
+      # This project uses SPFx 1.23 with Heft — requires Node 22 (see package.json engines field).
+      - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
 
       - name: Install agent dependencies
