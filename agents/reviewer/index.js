@@ -7,8 +7,8 @@
 'use strict';
 
 const fs = require('fs');
-const { readPrompt, createCompletion } = require('../../scripts/openai-client');
-const { getPRDiff, addPRReview } = require('../../scripts/github');
+const { readPrompt, createCompletion } = require('../openai-client');
+const { getPRDiff, addPRReview } = require('../github');
 
 // Diff can be very large; cap it to stay within the model's context window.
 const MAX_DIFF_CHARS = 30_000;

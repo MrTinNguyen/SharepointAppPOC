@@ -4,7 +4,7 @@
 
 'use strict';
 
-const { readPrompt, createCompletion } = require('../../scripts/openai-client');
+const { readPrompt, createCompletion } = require('../openai-client');
 
 // Cap the total source code sent to OpenAI to avoid hitting the context limit.
 const MAX_SOURCE_CHARS = 40_000;

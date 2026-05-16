@@ -4,7 +4,7 @@
 
 'use strict';
 
-const { readPrompt, createCompletion } = require('../../scripts/openai-client');
+const { readPrompt, createCompletion } = require('../openai-client');
 
 /**
  * @param {string} issueTitle

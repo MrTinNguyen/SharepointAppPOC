@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { postIssueComment, createPullRequest, addIssueLabels } = require('../../scripts/github');
+const { postIssueComment, createPullRequest, addIssueLabels } = require('../github');
 const { run: runArchitect } = require('../architect');
 const { run: runDeveloper } = require('../developer');
 const { run: runTester } = require('../tester');
