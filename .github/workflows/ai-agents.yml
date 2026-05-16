@@ -83,6 +83,7 @@ jobs:
   # ─── Job 3: DevOps deployment ──────────────────────────────────────────────
   # Triggered on push to main (i.e. after a PR is merged).
   # Builds the .sppkg and optionally deploys to the tenant App Catalog.
+  # Note: npm ci + gulp are run inside the agent — no separate install step needed.
   deploy:
     name: AI DevOps Deploy
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -99,17 +100,6 @@ jobs:
         with:
           node-version: 18
           cache: npm
-
-      # Cache node_modules so repeated runs skip the 2-minute npm ci.
-      - name: Cache SPFx node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: spfx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: spfx-${{ runner.os }}-
-
-      - name: Install SPFx dependencies
-        run: npm ci
 
       - name: Install agent dependencies
         run: npm install --prefix agents

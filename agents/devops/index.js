@@ -36,14 +36,24 @@ function findSppkg() {
 async function main() {
   console.log('\n🚀 DevOps Agent — SPFx Build & Deploy\n');
 
-  // Dependencies are installed by the workflow (npm ci step) before this agent runs.
+  // 1. Install SPFx dependencies if node_modules is missing (e.g. cold runner, cache miss).
+  console.log('── Installing SPFx dependencies ──');
+  exec('npm ci');
 
-  // 2. Build production bundle
-  // Use the local gulp installed by SPFx (node_modules/.bin/gulp).
-  // Never use `npx gulp` — it downloads gulp 5 which is incompatible with SPFx.
+  // Verify gulp is present before trying to run it.
+  const gulpBin = path.join(process.cwd(), 'node_modules', '.bin', 'gulp');
+  if (!fs.existsSync(gulpBin)) {
+    throw new Error(
+      `gulp not found at ${gulpBin} after npm ci.\n` +
+      'Make sure gulp-cli is listed in the project devDependencies.'
+    );
+  }
+
+  // 2. Build production bundle.
+  // Always use the local gulp installed by SPFx — never `npx gulp` (downloads incompatible gulp 5).
   console.log('\n── Building SPFx solution ──');
-  exec('./node_modules/.bin/gulp bundle --ship');
-  exec('./node_modules/.bin/gulp package-solution --ship');
+  exec(`"${gulpBin}" bundle --ship`);
+  exec(`"${gulpBin}" package-solution --ship`);
 
   const sppkgPath = findSppkg();
   if (!sppkgPath) {
