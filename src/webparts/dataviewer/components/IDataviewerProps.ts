@@ -1,7 +1,11 @@
+import { SPHttpClient } from '@microsoft/sp-http';
+import { IListViewConfig } from '../models/IListView';
+
 export interface IDataviewerProps {
-  description: string;
+  siteUrl: string;
+  viewConfigs: IListViewConfig[];
   isDarkTheme: boolean;
-  environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
+  spHttpClient: SPHttpClient;
 }

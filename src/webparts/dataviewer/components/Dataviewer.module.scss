@@ -2,33 +2,111 @@
 
 .dataviewer {
   overflow: hidden;
-  padding: 1em;
+  padding: 16px;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
+  font-family: $ms-font-family-fallbacks;
+
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
-}
 
-.welcome {
-  text-align: center;
-}
-
-.welcomeImage {
-  width: 100%;
-  max-width: 420px;
-}
-
-.links {
-  a {
-    text-decoration: none;
-    color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
-
-    &:hover {
-      text-decoration: underline;
-      color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
-    }
+  &.dark {
+    background-color: #1b1a19;
+    color: #f3f2f1;
   }
+}
+
+.listViewPanel {
+  background: "[theme:white, default: #ffffff]";
+  background: var(--white, #ffffff);
+  border: 1px solid "[theme:neutralLight, default: #edebe9]";
+  border: 1px solid var(--neutralLight, #edebe9);
+  border-radius: 4px;
+  margin-bottom: 24px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.panelHeader {
+  margin-bottom: 12px;
+}
+
+.viewTitle {
+  color: "[theme:themePrimary, default: #0078d4]";
+  color: var(--themePrimary, #0078d4);
+  font-weight: 600;
+}
+
+.itemCount {
+  color: "[theme:neutralSecondary, default: #605e5c]";
+  color: var(--neutralSecondary, #605e5c);
+}
+
+.searchBox {
+  margin-bottom: 12px;
+  max-width: 400px;
+}
+
+.errorBar {
+  margin-bottom: 12px;
+}
+
+.shimmerContainer {
+  padding: 8px 0;
+}
+
+.shimmerLine {
+  margin-bottom: 10px;
+}
+
+.detailsListWrapper {
+  overflow-x: auto;
+  border: 1px solid "[theme:neutralLighter, default: #f3f2f1]";
+  border: 1px solid var(--neutralLighter, #f3f2f1);
+  border-radius: 2px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 16px;
+  color: "[theme:neutralSecondary, default: #605e5c]";
+  color: var(--neutralSecondary, #605e5c);
+
+  span {
+    display: block;
+    margin-bottom: 8px;
+  }
+}
+
+.inlineSpinner {
+  margin-top: 12px;
+}
+
+.pagination {
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.pageButton {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+}
+
+.paginationEllipsis {
+  line-height: 36px;
+  padding: 0 4px;
+  color: "[theme:neutralSecondary, default: #605e5c]";
+  color: var(--neutralSecondary, #605e5c);
+}
+
+.pageInfo {
+  color: "[theme:neutralSecondary, default: #605e5c]";
+  color: var(--neutralSecondary, #605e5c);
+  margin-left: 8px;
 }

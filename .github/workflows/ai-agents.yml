@@ -1,0 +1,111 @@
+name: AI Multi-Agent Workflow
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  # ─── Job 1: Full pipeline ──────────────────────────────────────────────────
+  # Triggered when a new issue is opened with the "ai-task" label.
+  # Runs: Orchestrator → Architect → Developer → Tester → commit + PR.
+  run-ai-agents:
+    name: AI Pipeline (Orchestrator)
+    if: >
+      github.event_name == 'issues' &&
+      contains(github.event.issue.labels.*.name, 'ai-task')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: agents/package-lock.json
+
+      - name: Install agent dependencies
+        run: npm install --prefix agents
+
+      - name: Run Master Orchestrator
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node agents/orchestrator/index.js
+
+  # ─── Job 2: PR review ─────────────────────────────────────────────────────
+  # Triggered on every PR open/push. Posts an AI review comment.
+  review-pr:
+    name: AI PR Review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: agents/package-lock.json
+
+      - name: Install agent dependencies
+        run: npm install --prefix agents
+
+      - name: Run PR Review Agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node agents/reviewer/index.js
+
+  # ─── Job 3: DevOps deployment ──────────────────────────────────────────────
+  # Triggered on push to main (i.e. after a PR is merged).
+  # Builds the .sppkg and optionally deploys to the tenant App Catalog.
+  deploy:
+    name: AI DevOps Deploy
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Node 18 is required for the SPFx gulp toolchain.
+      - name: Setup Node 18 (SPFx)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install agent dependencies
+        run: npm install --prefix agents
+
+      - name: Run DevOps Agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHAREPOINT_CATALOG_URL: ${{ secrets.SHAREPOINT_CATALOG_URL }}
+          # Optional: m365 CLI credentials for auto-deploy
+          M365_USERNAME: ${{ secrets.M365_USERNAME }}
+          M365_PASSWORD: ${{ secrets.M365_PASSWORD }}
+        run: node agents/devops/index.js

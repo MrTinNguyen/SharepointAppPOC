@@ -1,0 +1,59 @@
+name: Feature Request
+description: Request a new feature — AI agents will design, build, test, and open a PR automatically.
+title: "[FEATURE] "
+labels: ["ai-task"]
+body:
+  - type: textarea
+    id: business_requirement
+    attributes:
+      label: Business Requirement
+      description: What problem does this feature solve? Who benefits and why?
+      placeholder: "As a SharePoint site owner, I need... so that..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: List the measurable conditions that define "done".
+      placeholder: |
+        - [ ] User can see X in the web part
+        - [ ] Clicking Y opens Z
+        - [ ] Data loads within 2 seconds
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature_type
+    attributes:
+      label: Feature Type
+      description: What kind of change is this?
+      options:
+        - New web part
+        - New component inside existing web part
+        - New SharePoint service / data layer
+        - Performance improvement
+        - Accessibility improvement
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_notes
+    attributes:
+      label: Technical Notes
+      description: Any specific SPFx APIs, SharePoint lists, columns, or constraints the agent should know about.
+      placeholder: "Uses the 'Projects' list. Columns: Title, Status (choice), AssignedTo (person)."
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - "Low"
+        - "Medium"
+        - "High"
+        - "Critical"
+    validations:
+      required: true

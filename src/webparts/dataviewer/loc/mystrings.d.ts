@@ -1,16 +1,19 @@
 declare interface IDataviewerWebPartStrings {
   PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
-  AppLocalEnvironmentSharePoint: string;
-  AppLocalEnvironmentTeams: string;
-  AppLocalEnvironmentOffice: string;
-  AppLocalEnvironmentOutlook: string;
-  AppSharePointEnvironment: string;
-  AppTeamsTabEnvironment: string;
-  AppOfficeEnvironment: string;
-  AppOutlookEnvironment: string;
-  UnknownEnvironment: string;
+  ManageViewsGroup: string;
+  AddViewButton: string;
+  RemoveViewButton: string;
+  NoViewsConfigured: string;
+  ViewTitleLabel: string;
+  ListTitleLabel: string;
+  ListTitleDescription: string;
+  ViewNameLabel: string;
+  ViewNameDescription: string;
+  PageSizeLabel: string;
+  EnableSearchLabel: string;
+  EnableSortLabel: string;
+  EnablePaginationLabel: string;
+  RequiredFieldError: string;
 }
 
 declare module 'DataviewerWebPartStrings' {

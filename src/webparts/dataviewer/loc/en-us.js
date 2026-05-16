@@ -1,16 +1,19 @@
 define([], function() {
   return {
-    "PropertyPaneDescription": "Description",
-    "BasicGroupName": "Group Name",
-    "DescriptionFieldLabel": "Description Field",
-    "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",
-    "AppLocalEnvironmentTeams": "The app is running on your local environment as Microsoft Teams app",
-    "AppLocalEnvironmentOffice": "The app is running on your local environment in office.com",
-    "AppLocalEnvironmentOutlook": "The app is running on your local environment in Outlook",
-    "AppSharePointEnvironment": "The app is running on SharePoint page",
-    "AppTeamsTabEnvironment": "The app is running in Microsoft Teams",
-    "AppOfficeEnvironment": "The app is running in office.com",
-    "AppOutlookEnvironment": "The app is running in Outlook",
-    "UnknownEnvironment": "The app is running in an unknown environment"
+    "PropertyPaneDescription": "Configure the SharePoint Data Viewer web part.",
+    "ManageViewsGroup": "Manage List Views",
+    "AddViewButton": "Add List View",
+    "RemoveViewButton": "Remove This View",
+    "NoViewsConfigured": "No list views configured. Click \"Add List View\" to get started.",
+    "ViewTitleLabel": "View Title",
+    "ListTitleLabel": "List Title",
+    "ListTitleDescription": "Exact title of the SharePoint list (e.g. \"Tasks\")",
+    "ViewNameLabel": "View Name",
+    "ViewNameDescription": "Optional: exact name of the list view to use (e.g. \"All Items\")",
+    "PageSizeLabel": "Items Per Page",
+    "EnableSearchLabel": "Enable Search",
+    "EnableSortLabel": "Enable Column Sorting",
+    "EnablePaginationLabel": "Enable Pagination",
+    "RequiredFieldError": "This field is required."
   }
 });
