@@ -36,14 +36,14 @@ function findSppkg() {
 async function main() {
   console.log('\n🚀 DevOps Agent — SPFx Build & Deploy\n');
 
-  // 1. Install dependencies
-  console.log('── Installing SPFx dependencies ──');
-  exec('npm ci');
+  // Dependencies are installed by the workflow (npm ci step) before this agent runs.
 
   // 2. Build production bundle
+  // Use the local gulp installed by SPFx (node_modules/.bin/gulp).
+  // Never use `npx gulp` — it downloads gulp 5 which is incompatible with SPFx.
   console.log('\n── Building SPFx solution ──');
-  exec('npx gulp bundle --ship');
-  exec('npx gulp package-solution --ship');
+  exec('./node_modules/.bin/gulp bundle --ship');
+  exec('./node_modules/.bin/gulp package-solution --ship');
 
   const sppkgPath = findSppkg();
   if (!sppkgPath) {

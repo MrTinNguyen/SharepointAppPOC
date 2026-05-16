@@ -43,7 +43,8 @@ jobs:
 
       - name: Run Master Orchestrator
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AI_PROVIDER: ${{ vars.AI_PROVIDER || 'gemini' }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node agents/orchestrator/index.js
@@ -73,7 +74,8 @@ jobs:
 
       - name: Run PR Review Agent
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AI_PROVIDER: ${{ vars.AI_PROVIDER || 'gemini' }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node agents/reviewer/index.js
@@ -85,27 +87,39 @@ jobs:
     name: AI DevOps Deploy
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Node 18 is required for the SPFx gulp toolchain.
+      # SPFx requires Node 18. Node 20+ breaks the gulp toolchain.
       - name: Setup Node 18 (SPFx)
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
 
+      # Cache node_modules so repeated runs skip the 2-minute npm ci.
+      - name: Cache SPFx node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: spfx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: spfx-${{ runner.os }}-
+
+      - name: Install SPFx dependencies
+        run: npm ci
+
       - name: Install agent dependencies
         run: npm install --prefix agents
 
       - name: Run DevOps Agent
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AI_PROVIDER: ${{ vars.AI_PROVIDER || 'gemini' }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SHAREPOINT_CATALOG_URL: ${{ secrets.SHAREPOINT_CATALOG_URL }}
-          # Optional: m365 CLI credentials for auto-deploy
           M365_USERNAME: ${{ secrets.M365_USERNAME }}
           M365_PASSWORD: ${{ secrets.M365_PASSWORD }}
         run: node agents/devops/index.js

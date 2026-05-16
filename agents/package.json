@@ -4,6 +4,7 @@
   "description": "AI Multi-Agent Workflow for SPFx development",
   "engines": { "node": ">=18" },
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "@octokit/rest": "^21.0.2",
     "openai": "^4.56.0"
   }
