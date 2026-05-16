@@ -1,0 +1,57 @@
+name: Bug Report
+description: Report a bug — AI agents will diagnose, fix, and open a PR automatically.
+title: "[BUG] "
+labels: ["ai-task", "bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What is happening? What did you expect to happen?
+      placeholder: |
+        **Actual behaviour:** The list view shows a blank screen when the list has more than 100 items.
+        **Expected behaviour:** All items should paginate correctly.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Open the DataViewer web part
+        2. Configure it to point at a list with 150+ items
+        3. Observe blank screen after page load
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: SharePoint tenant, browser, web part version.
+      placeholder: |
+        - Tenant: contoso.sharepoint.com
+        - Browser: Chrome 124
+        - Web part version: 1.0.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - "Low — cosmetic / minor inconvenience"
+        - "Medium — feature partially broken"
+        - "High — feature completely broken"
+        - "Critical — data loss or security issue"
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_notes
+    attributes:
+      label: Technical Notes
+      description: Console errors, network failures, relevant list/column names, screenshots.
+      placeholder: "Console error: Cannot read properties of undefined (reading 'slice')"

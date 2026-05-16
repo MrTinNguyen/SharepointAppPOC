@@ -2,7 +2,7 @@ name: AI Multi-Agent Workflow
 
 on:
   issues:
-    types: [opened]
+    types: [opened, labeled]   # fires when issue is created OR when a label is added
   pull_request:
     types: [opened, synchronize]
   push:
