@@ -49,7 +49,10 @@ async function createCompletion(systemPrompt, userContent, options = {}) {
 
 async function _gemini(systemPrompt, userContent, options = {}) {
   const { GoogleGenerativeAI } = require('@google/generative-ai');
-  const { jsonMode = false, model = 'gemini-1.5-flash' } = options;
+  // Always use a Gemini model — ignore any model name passed by agents
+  // (they may pass 'gpt-4o' which is an OpenAI name and invalid here).
+  const model = 'gemini-1.5-flash';
+  const { jsonMode = false } = options;
 
   const apiKey = process.env.AI_API_KEY || process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('AI_API_KEY is not set (needed for Gemini)');
