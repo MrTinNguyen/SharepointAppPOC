@@ -2,7 +2,7 @@ name: AI Multi-Agent Workflow
 
 on:
   issues:
-    types: [opened, labeled]   # fires when issue is created OR when a label is added
+    types: [opened, labeled]
   pull_request:
     types: [opened, synchronize]
   push:
@@ -15,8 +15,6 @@ permissions:
 
 jobs:
   # ─── Job 1: Full pipeline ──────────────────────────────────────────────────
-  # Triggered when a new issue is opened with the "ai-task" label.
-  # Runs: Orchestrator → Architect → Developer → Tester → commit + PR.
   run-ai-agents:
     name: AI Pipeline (Orchestrator)
     if: >
@@ -35,22 +33,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: agents/package-lock.json
 
       - name: Install agent dependencies
         run: npm install --prefix agents
 
       - name: Run Master Orchestrator
         env:
-          AI_PROVIDER: ${{ vars.AI_PROVIDER || 'gemini' }}
+          AI_PROVIDER: ${{ vars.AI_PROVIDER }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node agents/orchestrator/index.js
 
-  # ─── Job 2: PR review ─────────────────────────────────────────────────────
-  # Triggered on every PR open/push. Posts an AI review comment.
+  # ─── Job 2: PR review ──────────────────────────────────────────────────────
   review-pr:
     name: AI PR Review
     if: github.event_name == 'pull_request'
@@ -66,24 +61,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: agents/package-lock.json
 
       - name: Install agent dependencies
         run: npm install --prefix agents
 
       - name: Run PR Review Agent
         env:
-          AI_PROVIDER: ${{ vars.AI_PROVIDER || 'gemini' }}
+          AI_PROVIDER: ${{ vars.AI_PROVIDER }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node agents/reviewer/index.js
 
   # ─── Job 3: DevOps deployment ──────────────────────────────────────────────
-  # Triggered on push to main (i.e. after a PR is merged).
-  # Builds the .sppkg and optionally deploys to the tenant App Catalog.
-  # Note: npm ci + gulp are run inside the agent — no separate install step needed.
+  # Triggered on push to main (after PR merge).
+  # npm ci + heft build are run inside the agent itself.
   deploy:
     name: AI DevOps Deploy
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -94,19 +86,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # This project uses SPFx 1.23 with Heft — requires Node 22 (see package.json engines field).
       - name: Setup Node 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - name: Install agent dependencies
         run: npm install --prefix agents
 
       - name: Run DevOps Agent
         env:
-          AI_PROVIDER: ${{ vars.AI_PROVIDER || 'gemini' }}
+          AI_PROVIDER: ${{ vars.AI_PROVIDER }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SHAREPOINT_CATALOG_URL: ${{ secrets.SHAREPOINT_CATALOG_URL }}
